@@ -1,5 +1,5 @@
 /**
- * @file compactMatrix.c
+ * @file compact_matrix.c
  * @brief This file contains the implementation of a program that deals with compact matrices.
  *        A compact matrix is a matrix in which most of the elements are zero.
  *        This program performs operations on compact matrices such as addition, multiplication, and transposition.
