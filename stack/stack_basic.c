@@ -1,4 +1,9 @@
-// Basic stack(data structure) implementation
+/**
+ * @file stack_basic.c
+ * @brief This file contains the implementation of a program that deals with stacks.
+ *        A stack is a data structure that follows the Last In First Out (LIFO) principle.
+ */
+//
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
