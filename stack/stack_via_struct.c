@@ -1,5 +1,9 @@
-// Stack(data structure) implementation via struct
-// Each stack element(typedef char StackElement[1024]) can handle up to 1,024 bytes long characters(including NULL terminator).
+/**
+ * @file stack_via_struct.c
+ * @brief This file contains the implementation of a program that deals with stacks.
+ *        This stack implementation uses a struct to represent the stack and its elements, string(char [1024]) type.
+ *        Because I chose string type, memory handling is a bit more complicated than the previous stack implementation.
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <memory.h>
