@@ -75,6 +75,10 @@ StackElement evaluatePostfixExpression(const char* postfixExpression) {
         ) {
             // If the current character is an operator, then pop two operands from the stack,
             // perform the arithmetic operation and push the result back to the stack.
+            if (stack.stackTopIndex < 1) {
+                fprintf(stderr, "Invalid postfix expression\n");
+                exit(-1);
+            }
             StackElement operand1 = stackPop(&stack);
             StackElement operand2 = stackPop(&stack);
             switch (currentCharacter) {
