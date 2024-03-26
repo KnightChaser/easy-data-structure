@@ -1,2 +1,5 @@
 # Excluding the output folder
 */output
+
+# Ignore internal .vscode configuration file
+.vscode
