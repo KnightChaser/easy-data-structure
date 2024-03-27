@@ -121,3 +121,10 @@ int main(void) {
 
     return 0;
 }
+
+// | A | B | C | D | E |   |   |   |   |   | 
+// |   | B | C | D | E |   |   |   |   |   |
+// |   | B | C | D | E | F |   |   |   |   |
+// |   |   | C | D | E | F |   |   |   |   |
+// |   |   | C | D | E | F | G |   |   |   |
+// Peek: C
