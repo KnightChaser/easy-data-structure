@@ -56,7 +56,6 @@ void enqueue(Queue *queue, const QueueElement data) {
         queue->rearQueueNode = newQueueNode;
     }
 
-    queue->rearQueueNode = newQueueNode;
     queue->queueSize += 1;
 }
 
