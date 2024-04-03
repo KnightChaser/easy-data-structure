@@ -1,4 +1,4 @@
-/*
+/**
  * @file circular_queue_basic.c
  * @brief A basic implementation of circular queue, written in C language
  */

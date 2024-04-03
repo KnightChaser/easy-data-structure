@@ -1,4 +1,4 @@
-/*
+/**
  * @file list_by_array.c
  * @brief C program to implement a linked list using array and perform various operations
  *        Linked lists are often implemented using nodes, but here we implement it using arrays for basic understanding.

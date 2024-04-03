@@ -1,4 +1,4 @@
-/*
+/**
  * @file queue_basic.c
  * @brief Basic queue implementation in C
  */

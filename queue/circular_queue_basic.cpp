@@ -1,4 +1,4 @@
-/*
+/**
  * @file circular_queue_basic.cpp
  * @brief A basic implementation of circular queue, written in C++.
  *        C++ version of circular_queue_basic.c

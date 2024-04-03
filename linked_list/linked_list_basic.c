@@ -1,4 +1,4 @@
-/*
+/**
  * @file linked_list_basic.c
  * @brief A basic implementation of linked list using Node structure(data and the pointer to the next node)
  */

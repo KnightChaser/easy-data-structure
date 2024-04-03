@@ -1,4 +1,4 @@
-/* 
+/**
  * @file linked_list_basic.cpp
  * @brief C++ implementation of a single linked list
  *        C++ version of linked_list_basic.c 

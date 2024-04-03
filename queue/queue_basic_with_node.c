@@ -1,4 +1,4 @@
-/*
+/**
  * @file queue_basic_with_node.c
  * @brief Basic queue implementation in C using a node (list)
  *        Because the queue is implemented using a node, the queue can grow dynamically.

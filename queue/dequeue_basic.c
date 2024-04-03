@@ -1,4 +1,4 @@
-/*
+/**
  * @file dequeue_basic.c
  * @brief Basic dequeue implementation in C
  *        To provide more availability, this implementation is based on a circular queue

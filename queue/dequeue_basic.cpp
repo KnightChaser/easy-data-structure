@@ -1,4 +1,4 @@
-/*
+/**
  * @file dequeue_basic.cpp
  * @brief An implementation of dequeue using C++ STL, C++ version of dequeue_basic.c
  *        To provide more availability, we use circular queue to implement dequeue.
