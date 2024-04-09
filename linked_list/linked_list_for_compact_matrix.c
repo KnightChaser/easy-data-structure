@@ -204,10 +204,19 @@ int main(void) {
 }
 
 //     {ROW => 1, COL => 0, DATA => 0.100000} 
-//  -> {ROW => 2, COL => 0, DATA => 3.200000}
-//  -> {ROW => 2, COL => 1, DATA => 5.400000}
+//  -> {ROW => 2, COL => 0, DATA => 3.200000} 
+//  -> {ROW => 2, COL => 1, DATA => 5.400000} 
 //  -> {ROW => 3, COL => 1, DATA => 7.500000} 
-//  -> {ROW => 1, COL => 3, DATA => 2.300000}
-//  -> {ROW => 2, COL => 3, DATA => 6.700000}
+//  -> {ROW => 1, COL => 3, DATA => 2.300000} 
+//  -> {ROW => 2, COL => 3, DATA => 6.700000} 
 //  -> NULL
+
+//     {ROW => 2, COL => 3, DATA => 6.700000} 
+//  -> {ROW => 1, COL => 3, DATA => 2.300000} 
+//  -> {ROW => 3, COL => 1, DATA => 7.500000} 
+//  -> {ROW => 2, COL => 1, DATA => 5.400000} 
+//  -> {ROW => 2, COL => 0, DATA => 3.200000}
+//  -> {ROW => 1, COL => 0, DATA => 0.100000}
+//  -> NULL
+// The linked list is deleted successfully.
 // The linked list is deleted successfully.
