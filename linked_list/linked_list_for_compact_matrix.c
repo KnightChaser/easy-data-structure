@@ -172,22 +172,27 @@ int main(void) {
     }
 
     // Create a linked list for compact matrix after traversing the sparse matrix
-    CompactMatrixNode *linkedList = NULL;
+    CompactMatrixNode *linkedListFront = NULL;
+    CompactMatrixNode *linkedListRear  = NULL;
 
     for (size_t y = 0; y < sparseMatrixY; y++) {
         for (size_t x = 0; x < sparseMatrixX; x++) {
             if (dynamicSparseMatrix[y][x] != 0) {
                 CompactMatrixElement newElement = {x, y, dynamicSparseMatrix[y][x]};
-                linkedList = insertCompactMatrixNodeAtEnd(linkedList, newElement);
+                // Let's compare the outcome of adding data to the front and the rear
+                linkedListFront = insertCompactMatrixNodeAtEnd(linkedListFront, newElement);
+                linkedListRear = insertCompactMatrixNodeAtStart(linkedListRear, newElement);
             }
         }
     }
 
     // Print the linked list
-    displayCompactMatrix(linkedList);
+    displayCompactMatrix(linkedListFront);  printf("\n");
+    displayCompactMatrix(linkedListRear);
 
     // Delete the linked list
-    deleteCompactMatrix(linkedList);
+    deleteCompactMatrix(linkedListFront);
+    deleteCompactMatrix(linkedListRear);
 
     // Free the dynamicSparseMatrix memory
     for (unsigned int index = 0; index < sparseMatrixY; index++) {
