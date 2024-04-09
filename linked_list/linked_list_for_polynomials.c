@@ -125,6 +125,51 @@ Polynomial* addPolynomials(const Polynomial *polynomial1, const Polynomial *poly
     return result;
 }
 
+// Subtract two polynomials. First polynomial - Second polynomial.
+// Create a new polynomial that is the difference of the two given polynomials.
+Polynomial* subtractPolynomials(const Polynomial *polynomial1, const Polynomial *polynomial2) {
+    Polynomial *result = createPolynomial();
+    PolynomialNode *currentNode1 = polynomial1->head;
+    PolynomialNode *currentNode2 = polynomial2->head;
+
+    while (currentNode1 != NULL && currentNode2 != NULL) {
+        if (currentNode1->exponent == currentNode2->exponent) {
+            // If the exponents of the two nodes are equal, subtract the coefficients and insert to the new node.
+            if (currentNode1->coefficient - currentNode2->coefficient != 0) {
+                // If the subtracted coefficient is zero, then the current term is no longer needed.
+                addPolynomialNode(result, currentNode1->coefficient - currentNode2->coefficient, currentNode1->exponent);
+            }
+            currentNode1 = currentNode1->next;
+            currentNode2 = currentNode2->next;
+        } else if (currentNode1->exponent > currentNode2->exponent) {
+            // If the first polynomial has a greater exponent, then just insert the first node to the new node
+            addPolynomialNode(result, currentNode1->coefficient, currentNode1->exponent);
+            currentNode1 = currentNode1->next;
+        } else {
+            // If the second polynomial has a greater exponent, then just insert the second node to the new node
+            // Be aware that the second polynomial's coefficient should be negated because the second is subtracted from the first.
+            addPolynomialNode(result, -currentNode2->coefficient, currentNode2->exponent);
+            currentNode2 = currentNode2->next;
+        }
+    }
+
+    // If there are remaining nodes in the first polynomial
+    while (currentNode1 != NULL) {
+        addPolynomialNode(result, currentNode1->coefficient, currentNode1->exponent);
+        currentNode1 = currentNode1->next;
+    }
+
+    // If there are remaining nodes in the second polynomial
+    while (currentNode2 != NULL) {
+        // Be aware that the second polynomial's coefficient should be negated because the second is subtracted from the first.
+        // So we add the "negated" coefficient to the new polynomial.
+        addPolynomialNode(result, -currentNode2->coefficient, currentNode2->exponent);
+        currentNode2 = currentNode2->next;
+    }
+    
+    return result;
+}
+
 // Delete the polynomial linked list
 void deletePolynomial(Polynomial *polynomial) {
     PolynomialNode *currentNode = polynomial->head;
@@ -160,12 +205,18 @@ int main(void) {
     displayPolynomialLinkedList(polynomialB);                         // 5x^5 + x^4 + 2x^3 + 3x^2 + 4x + 5
 
     // Add two polynomials; result will be 3x^8 + 5x^5 + x^4 + 4x^3 + 7x^2 + 8x + 10
-    Polynomial *result = addPolynomials(polynomialA, polynomialB);
-    displayPolynomialLinkedList(result);                                
+    Polynomial *added = addPolynomials(polynomialA, polynomialB);
+    displayPolynomialLinkedList(added);
+
+    // Subtract(first - second) two polynomials: 3x^8 - 5x^5 - x^4 + x^2
+    Polynomial *subtracted = subtractPolynomials(polynomialA, polynomialB);
+    displayPolynomialLinkedList(subtracted);
+
 
     deletePolynomial(polynomialA);
     deletePolynomial(polynomialB);
-    deletePolynomial(result);
+    deletePolynomial(added);
+    deletePolynomial(subtracted);
 
     return 0;
 }
