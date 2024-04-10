@@ -111,3 +111,7 @@ int main(void) {
 
     return 0;
 }
+
+// Original linked list: Alpha -> Bravo -> Charlie -> Delta -> Echo -> NULL
+// Reverted linked list: Echo -> Delta -> Charlie -> Bravo -> Alpha -> NULL
+// Linked list is deallocated
