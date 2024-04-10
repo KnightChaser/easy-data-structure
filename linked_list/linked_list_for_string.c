@@ -19,7 +19,7 @@ typedef struct LinkedListNode {
 LinkedListNode* insertLinkedListNodeAtStart(LinkedListNode *headNode, 
                                             LinkedListType data) {
     LinkedListNode *newNode = (LinkedListNode *)malloc(sizeof(LinkedListNode));
-    newNode->data = strdup(data); // Duplicate the string
+    newNode->data = _strdup(data); // Duplicate the string
     newNode->next = headNode;
     headNode = newNode;
     return headNode;
@@ -30,7 +30,7 @@ LinkedListNode* insertLinkedListNodeBehindGivenNode(LinkedListNode *headNode,
                                                     LinkedListNode *givenNode, 
                                                     LinkedListType data) {
     LinkedListNode *newNode = (LinkedListNode *)malloc(sizeof(LinkedListNode));
-    newNode->data = strdup(data); // Duplicate the string
+    newNode->data = _strdup(data); // Duplicate the string
     newNode->next = givenNode->next;
     givenNode->next = newNode;
     return headNode;
@@ -39,7 +39,7 @@ LinkedListNode* insertLinkedListNodeBehindGivenNode(LinkedListNode *headNode,
 LinkedListNode* insertLinkedListNodeAtEnd(LinkedListNode *headNode,
                                           LinkedListType data) {
     LinkedListNode *newNode = (LinkedListNode *)malloc(sizeof(LinkedListNode));
-    newNode->data = strdup(data); // Duplicate the string
+    newNode->data = _strdup(data); // Duplicate the string
     newNode->next = NULL;
 
     if (headNode == NULL) {
