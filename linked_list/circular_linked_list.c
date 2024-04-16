@@ -124,3 +124,23 @@ int main(void) {
 
     return 0;
 }
+
+// A -> A
+// A -> B -> A
+// A -> C -> B -> A
+// A -> D -> C -> B -> A
+// A -> E -> D -> C -> B -> A
+// A -> F -> E -> D -> C -> B -> A
+// A -> G -> F -> E -> D -> C -> B -> A
+// A -> H -> G -> F -> E -> D -> C -> B -> A
+// A -> I -> H -> G -> F -> E -> D -> C -> B -> A
+// A -> J -> I -> H -> G -> F -> E -> D -> C -> B -> A
+// A -> K -> J -> I -> H -> G -> F -> E -> D -> C -> B -> A
+// A -> K -> J -> I -> H -> G -> F -> E -> D -> C -> B -> L -> A
+// A -> K -> J -> I -> H -> G -> F -> E -> D -> C -> B -> L -> M -> A
+// A -> K -> J -> I -> H -> G -> F -> E -> D -> C -> B -> L -> M -> N -> A
+// A -> K -> J -> I -> H -> G -> F -> E -> D -> C -> B -> L -> M -> N -> O -> A
+// A -> K -> J -> I -> H -> G -> F -> E -> D -> C -> B -> L -> M -> N -> O -> P -> A
+// A -> K -> J -> I -> H -> G -> F -> E -> D -> C -> B -> L -> M -> N -> O -> P -> Q -> A
+// A -> K -> J -> I -> H -> G -> F -> E -> D -> C -> B -> L -> M -> N -> O -> P -> Q -> R -> A
+// The circular linked list has been freed.
