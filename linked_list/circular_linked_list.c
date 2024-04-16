@@ -60,6 +60,7 @@ CircularLinkedListNode* insertCircularLinkedListNodeBeforeHead(CircularLinkedLis
         // Now currentNode is right before the head node
         currentNode->next = newNode;
         newNode->next = headNode;
+        headNode = newNode;             // Refresh headNode to the newly created node
     }
     
     return headNode;
@@ -136,11 +137,11 @@ int main(void) {
 // A -> I -> H -> G -> F -> E -> D -> C -> B -> A
 // A -> J -> I -> H -> G -> F -> E -> D -> C -> B -> A
 // A -> K -> J -> I -> H -> G -> F -> E -> D -> C -> B -> A
-// A -> K -> J -> I -> H -> G -> F -> E -> D -> C -> B -> L -> A
-// A -> K -> J -> I -> H -> G -> F -> E -> D -> C -> B -> L -> M -> A
-// A -> K -> J -> I -> H -> G -> F -> E -> D -> C -> B -> L -> M -> N -> A
-// A -> K -> J -> I -> H -> G -> F -> E -> D -> C -> B -> L -> M -> N -> O -> A
-// A -> K -> J -> I -> H -> G -> F -> E -> D -> C -> B -> L -> M -> N -> O -> P -> A
-// A -> K -> J -> I -> H -> G -> F -> E -> D -> C -> B -> L -> M -> N -> O -> P -> Q -> A
-// A -> K -> J -> I -> H -> G -> F -> E -> D -> C -> B -> L -> M -> N -> O -> P -> Q -> R -> A
+// L -> A -> K -> J -> I -> H -> G -> F -> E -> D -> C -> B -> L
+// M -> L -> A -> K -> J -> I -> H -> G -> F -> E -> D -> C -> B -> M
+// N -> M -> L -> A -> K -> J -> I -> H -> G -> F -> E -> D -> C -> B -> N
+// O -> N -> M -> L -> A -> K -> J -> I -> H -> G -> F -> E -> D -> C -> B -> O
+// P -> O -> N -> M -> L -> A -> K -> J -> I -> H -> G -> F -> E -> D -> C -> B -> P
+// Q -> P -> O -> N -> M -> L -> A -> K -> J -> I -> H -> G -> F -> E -> D -> C -> B -> Q
+// R -> Q -> P -> O -> N -> M -> L -> A -> K -> J -> I -> H -> G -> F -> E -> D -> C -> B -> R
 // The circular linked list has been freed.
