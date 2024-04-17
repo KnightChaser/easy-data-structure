@@ -66,6 +66,42 @@ CircularLinkedListNode* insertCircularLinkedListNodeBeforeHead(CircularLinkedLis
     return headNode;
 }
 
+// Insert a new node having "data" next to the specific node having "specificData"
+CircularLinkedListNode* insertCircularLinkedListNodeNextToSpecificNode(CircularLinkedListNode *headNode,
+                                                                       CircularLinkedListElement data,
+                                                                       CircularLinkedListElement specificData) {
+    // This node will be inserted next to the specific node
+    CircularLinkedListNode *newNode = (CircularLinkedListNode *)malloc(sizeof(CircularLinkedListNode));
+    memset(newNode, 0, sizeof(CircularLinkedListNode));
+
+    newNode->data = data;
+
+    if (headNode == NULL) {
+        // The given circular linked list is empty, so the new node will be the head node
+        headNode = newNode;
+        headNode->next = headNode;
+    } else {
+        // The new node will be appended next to the specific node
+        // We must have to find a node having a specific data.
+        CircularLinkedListNode *currentNode = headNode;
+        while (currentNode->data != specificData) {
+            currentNode = currentNode->next;
+            if (currentNode == headNode) {
+                // The specific node is not found in the circular linked list
+                fprintf(stderr, "The specific node having the specific data is not found in the circular linked list.\n");
+                free(newNode);
+                return headNode;
+            }
+        }
+
+        // Now currentNode is the specific node
+        newNode->next = currentNode->next;
+        currentNode->next = newNode;
+    }
+    
+    return headNode;
+}
+
 // Print the circular linked list
 void printCircularLinkedList(CircularLinkedListNode *headNode) {
     if (headNode == NULL) {
@@ -120,6 +156,11 @@ int main(void) {
         printCircularLinkedList(headNode);
     }
 
+    // Insert a new node next to a specific node having a specific data
+    // Add a new node 'X' next to the node having data 'B'.
+    headNode = insertCircularLinkedListNodeNextToSpecificNode(headNode, 'X', 'B');
+    printCircularLinkedList(headNode);
+
     // Free the circular linked list
     freeCircularLinkedList(headNode);
 
@@ -144,4 +185,5 @@ int main(void) {
 // P -> O -> N -> M -> L -> A -> K -> J -> I -> H -> G -> F -> E -> D -> C -> B -> P
 // Q -> P -> O -> N -> M -> L -> A -> K -> J -> I -> H -> G -> F -> E -> D -> C -> B -> Q
 // R -> Q -> P -> O -> N -> M -> L -> A -> K -> J -> I -> H -> G -> F -> E -> D -> C -> B -> R
+// R -> Q -> P -> O -> N -> M -> L -> A -> K -> J -> I -> H -> G -> F -> E -> D -> C -> B -> X -> R
 // The circular linked list has been freed.
