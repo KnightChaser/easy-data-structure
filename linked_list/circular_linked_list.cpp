@@ -39,6 +39,7 @@ public:
     // Methods
     bool isEmpty();
     void insertNextToHead(CircularLinkedListType data);
+    void insertNextToNodeValue(CircularLinkedListType data, CircularLinkedListType targetValue);
     void insertBeforeHead(CircularLinkedListType data);
     void display();
 };
@@ -83,6 +84,29 @@ void CircularLinkedList<CircularLinkedListType>::insertBeforeHead(CircularLinked
     this->size++;
 }
 
+// Method to insert a new node having "value" next to the specific node having "targetValue"
+template <typename CircularLinkedListType>
+void CircularLinkedList<CircularLinkedListType>::insertNextToNodeValue(CircularLinkedListType data, CircularLinkedListType targetValue) {
+    // Create a new node
+    std::shared_ptr<Node> newNode = std::make_unique<Node>();
+    newNode->data = data;
+
+    // Traverse the circular linked list to find the specific node
+    std::shared_ptr<Node> currentNode = this->headNodePointer;
+    while (currentNode->data != targetValue) {
+        currentNode = currentNode->next;
+        if (currentNode == this->headNodePointer) {
+            // The logic couldn't find the specific node having the target value (non-existent target value)
+            throw std::runtime_error("The specific node having the target value is not found.");
+        }
+    }
+
+    // Now currentNode is the specific node having the target value
+    newNode->next = currentNode->next;
+    currentNode->next = newNode;
+    this->size++;
+}
+
 // Method to display the circular linked list
 template <typename CircularLinkedListType>
 void CircularLinkedList<CircularLinkedListType>::display() {
@@ -114,11 +138,21 @@ int main(void) {
         circularLinkedList.display();
     }
 
+    // Insert a new node having "XX" next to the specific node having "A1"
+    circularLinkedList.insertNextToNodeValue("XX", "A1");
+
     // Insert a new node before the head node
     std::string elementsBack[] = {"Z0", "Z1", "Z2", "Z3"};
     for (const std::string element : elementsBack) {
         circularLinkedList.insertBeforeHead(element);
         circularLinkedList.display();
+    }
+
+    // Making an exception
+    try {
+        circularLinkedList.insertNextToNodeValue("YY", "A5");
+    } catch (const std::runtime_error& e) {
+        std::cerr << e.what() << std::endl;
     }
 
     return 0;
@@ -128,8 +162,9 @@ int main(void) {
 // EE -> A1 -> A0 -> EE
 // EE -> A2 -> A1 -> A0 -> EE
 // EE -> A3 -> A2 -> A1 -> A0 -> EE
-// Z0 -> EE -> A3 -> A2 -> A1 -> A0 -> Z0
-// Z1 -> Z0 -> EE -> A3 -> A2 -> A1 -> A0 -> Z1
-// Z2 -> Z1 -> Z0 -> EE -> A3 -> A2 -> A1 -> A0 -> Z2
-// Z3 -> Z2 -> Z1 -> Z0 -> EE -> A3 -> A2 -> A1 -> A0 -> Z3
+// Z0 -> EE -> A3 -> A2 -> A1 -> XX -> A0 -> Z0
+// Z1 -> Z0 -> EE -> A3 -> A2 -> A1 -> XX -> A0 -> Z1
+// Z2 -> Z1 -> Z0 -> EE -> A3 -> A2 -> A1 -> XX -> A0 -> Z2
+// Z3 -> Z2 -> Z1 -> Z0 -> EE -> A3 -> A2 -> A1 -> XX -> A0 -> Z3
+// The specific node having the target value is not found.
 // Circular Linked List deleted
