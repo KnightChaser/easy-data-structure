@@ -162,7 +162,7 @@ func (cll *CircularLinkedList[CircularLinkedListNodeType]) Display() {
 	fmt.Printf("%v\n", cll.head.data)
 }
 
-func main() {
+func usageCircularLinkedList() {
 	cll := NewCircularLinkedList[int](1)
 	cll.InsertNextToHeadNode(2)
 	cll.InsertNextToHeadNode(3)
