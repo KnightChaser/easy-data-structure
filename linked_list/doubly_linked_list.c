@@ -18,7 +18,8 @@ typedef struct DoublyLinkedListNode {
 } DoublyLinkedListNode;
 
 // Initialize a new doubly linked list node
-void initializeDoublyLinkedListNode(DoublyLinkedListNode *node, DoublyLinkedListElement data) {
+void initializeDoublyLinkedListNode(DoublyLinkedListNode *node, 
+                                    DoublyLinkedListElement data) {
     // // Fill the memory with 0 (initialize the node with 0 to ensure safety
     memset(node, 0, sizeof(DoublyLinkedListNode));
     node->data = data;
@@ -27,7 +28,8 @@ void initializeDoublyLinkedListNode(DoublyLinkedListNode *node, DoublyLinkedList
 }
 
 // Insert a new node next to the given node
-void insertDoublyLinkedListNodeNextTo(DoublyLinkedListNode *node, DoublyLinkedListElement data) {
+void insertDoublyLinkedListNodeNextTo(DoublyLinkedListNode *node, 
+                                      DoublyLinkedListElement data) {
     DoublyLinkedListNode *newNode = (DoublyLinkedListNode *)malloc(sizeof(DoublyLinkedListNode));
     initializeDoublyLinkedListNode(newNode, data);
 
@@ -36,6 +38,22 @@ void insertDoublyLinkedListNodeNextTo(DoublyLinkedListNode *node, DoublyLinkedLi
     newNode->previous = node;           // newNode->previous points to the given node (backward)
     node->next->previous = newNode;     // The node that was next to the given node now points to the newNode backward
     node->next = newNode;               // The given node now points to the newNode forward
+}
+
+// Insert a new node next to a node that has a specific data
+void insertDoublyLinkedListNodeNextToData(DoublyLinkedListNode *headNode,
+                                          DoublyLinkedListElement data,
+                                          DoublyLinkedListElement newData) {
+    DoublyLinkedListNode *currentNode = headNode;
+
+    do {
+        if (currentNode->data == data) {
+            insertDoublyLinkedListNodeNextTo(currentNode, newData);
+            return;
+        }
+    } while ((currentNode = currentNode->next) != headNode);
+
+    fprintf(stderr, "The data %c does not exist in the doubly linked list.\n", data);
 }
 
 // Remove a node from the doubly linked list
@@ -99,6 +117,12 @@ int main(void) {
     insertDoublyLinkedListNodeNextTo(doublyLinkedList->next->next->next, 'E');
     printDoublyLinkedList(doublyLinkedList);
 
+    // Inserting next to a node that has a specific data
+    insertDoublyLinkedListNodeNextToData(doublyLinkedList, 'B', 'X');
+    printDoublyLinkedList(doublyLinkedList);
+    insertDoublyLinkedListNodeNextToData(doublyLinkedList, 'C', 'Y');
+    printDoublyLinkedList(doublyLinkedList);
+
     // Removing
     removeDoublyLinkedListNode(doublyLinkedList->next->next);
     printDoublyLinkedList(doublyLinkedList);
@@ -115,5 +139,7 @@ int main(void) {
 // A <-> B <-> C <-> A
 // A <-> B <-> C <-> D <-> A
 // A <-> B <-> C <-> D <-> E <-> A
-// A <-> B <-> D <-> E <-> A
-// A <-> D <-> E <-> A
+// A <-> B <-> X <-> C <-> D <-> E <-> A
+// A <-> B <-> X <-> C <-> Y <-> D <-> E <-> A
+// A <-> B <-> C <-> Y <-> D <-> E <-> A
+// A <-> C <-> Y <-> D <-> E <-> A
