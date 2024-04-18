@@ -95,6 +95,11 @@ func (cll *CircularLinkedList[CircularLinkedListNodeType]) InsertNextToNodeByVal
 	// Traverse to the target node having the target data
 	for currentNode.data != targetData {
 		currentNode = currentNode.next
+		if currentNode == cll.head {
+			// Target data not found in the list
+			fmt.Println("Target data not found in the list")
+			return
+		}
 	}
 
 	newNode.next = currentNode.next
@@ -104,13 +109,21 @@ func (cll *CircularLinkedList[CircularLinkedListNodeType]) InsertNextToNodeByVal
 
 // Inserts a new node before a node whose data is equal to the given data
 func (cll *CircularLinkedList[CircularLinkedListNodeType]) InsertBeforeNodeByValue(data CircularLinkedListNodeType, targetData CircularLinkedListNodeType) {
-	// ... <-> newNode <-> targetNode <-> ...
+	if cll.size == 0 {
+		fmt.Println("List is empty")
+		return
+	}
+
 	newNode := &CircularLinkedListNode[CircularLinkedListNodeType]{data: data}
 	currentNode := cll.head
 
-	// Traverse to the target node having the target data
 	for currentNode.next.data != targetData {
 		currentNode = currentNode.next
+		if currentNode == cll.head {
+			// Target data not found in the list
+			fmt.Println("Target data not found in the list")
+			return
+		}
 	}
 
 	newNode.next = currentNode.next
