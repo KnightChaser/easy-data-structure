@@ -56,12 +56,19 @@ void pushElementToLinkedListStack(LinkedListStack *stack, Element data) {
 
 // Peek the top element of the liniked list stack
 Element peekElementOfLinkedListStack(LinkedListStack *stack) {
+    if (isLinkedListStackEmpty(stack)) {
+        fprintf(stderr, "The linked list stack is empty.\n");
+    }
     return stack->top->data;
 }
 
 // Pop the top element of the linked list stack
 Element popElementFromLinkedListStack(LinkedListStack *stack) {
     // (top) -> (old top) -> (old top->next(that will be the new top)) -> ...
+    if (isLinkedListStackEmpty(stack)) {
+        fprintf(stderr, "The linked list stack is empty.\n");
+    }
+
     LinkedListNode *oldTop = stack->top;
     Element data = oldTop->data;
     stack->top = oldTop->next;      // The old top node will be removed, and the next node will be the new top node
