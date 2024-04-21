@@ -2,6 +2,10 @@
 ; description: A simple stack implementation in x86-64 assembly with subroutines for pushing and popping characters
 ;              An improved version of ./stack_basic.asm
 
+; compile and run:
+; nasm -f elf64 -o stack_basic.o stack_basic.asm
+; gcc -o stack_basic.out stack_basic.o -no-pie
+
 extern printf
 
 section .data

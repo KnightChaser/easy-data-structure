@@ -1,6 +1,10 @@
 ; file: stack_basic.asm
 ; description: A simple stack implementation in NASM, Ubuntu, with push and pop notifications using loops
 
+; compile and run
+; nasm -f elf64 -o stack_basic.o stack_basic.asm
+; gcc -o stack_basic.out stack_basic.o -no-pie
+
 extern printf
 
 section .data
