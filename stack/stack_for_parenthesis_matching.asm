@@ -39,7 +39,7 @@ section .data
     ; Define examples of balanced and not balanced parenthesis
     formatStringShowingExample              DB     10, "Example: %s", 10, 0
     parenthesisBalancedExample              DB     "(a+(b+(c/d)+e))", 0
-    parenthesisNotBalancedExample           DB     "(a+(b+(c/d)+e)", 0
+    parenthesisNotBalancedExample           DB     "(a+(b+(c/d)+e)))", 0
 
 section .bss
     align 16                                                                ; Align the stack to 16 bytes
@@ -139,7 +139,10 @@ checkParenthesisMatching:
 
         .popParenthesis:
             call stackPop                                   ; Pop the character from the stack
-            jmp .readParenthesis
+            cmp rax, -1                                     ; Check if stack exception occurs
+            je .parenthesisNotBalanced                      ; Immediately decide that the parenthesis are not balanced
+            
+            jmp .readParenthesis                            ; Continue only if the stack is not empty during checking string
 
     .endReadParenthesis:
         ; If the stack is empty, the parenthesis are balanced
@@ -148,11 +151,12 @@ checkParenthesisMatching:
         cmp edx, 0
         je .parenthesisBalanced
 
-        ; If the stack is not empty, the parenthesis are not balanced
-        lea rdi, [formatStringParenthesisNotBalanced]
-        xor rax, rax
-        call printf
-        jmp exit                                            ; Exit to main routine
+        .parenthesisNotBalanced:
+            ; If the stack is not empty, the parenthesis are not balanced
+            lea rdi, [formatStringParenthesisNotBalanced]
+            xor rax, rax
+            call printf
+            jmp exit                                        ; Exit to main routine
 
     .numberOfCharactersNotEqual:
         lea rdi, [formatStringNumberOfCharactersNotEqual]
@@ -254,6 +258,8 @@ stackPop:
         lea rdi, [formatStringStackEmpty]
         xor rax, rax
         call printf
+
+        mov rax, -1                                         ; An invalid value to indicate the stack is empty
 
         leave
         ret
