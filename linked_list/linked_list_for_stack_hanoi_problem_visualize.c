@@ -125,119 +125,94 @@ void visualizeHanoiProblemStack(HanoiProblemStack *hanoiProblemStack) {
     printf("\n");
 }
 
+static unsigned int diskMovementCounter = 0;
+
 // Print the movement of the disk in the Hanoi tower problem
-void moveHanoiDisk(HanoiProblemStack *hanoiProblemStack,
+void moveHanoiDisk(HanoiProblemStack* hanoiProblemStack,
                    const unsigned int disk,
                    const char sourcePillar,
                    const char targetPillar) {
     printf("Move disk %2i from pillar %c to pillar %c\n", disk, sourcePillar, targetPillar);
     visualizeHanoiProblemStack(hanoiProblemStack);
+    diskMovementCounter++;
 }
 
 // Solve the Hanoi tower problem
-void solveHanoiTowerProblem(const unsigned int disk,
+void solveHanoiTowerProblem(HanoiProblemStack* hanoiProblemStack,
+                            const unsigned int disk,
                             const char sourcePillar,
                             const char auxiliaryPillar,
                             const char targetPillar) {
-    // Initialize the stack for the Hanoi problem
-    HanoiProblemStack* hanoiProblemStack = createHanoiProblemStack();
-    pushHanoiProblemStack(hanoiProblemStack, disk, sourcePillar, auxiliaryPillar, targetPillar);
 
-    // While the stack is not empty, keep solving the Hanoi tower problem
-    // The problem will be ultimately solved when the stack is empty
-    while (!isHanoiProblemStackEmpty(hanoiProblemStack)) {
-        HanoiProblemStackNode* topNode = popHanoiProblemStack(hanoiProblemStack);
-        HanoiProblemFunctionCall topFunctionCall = topNode->data;               // Get the data from the top node
-        free(topNode);
+    // If the stack is not empty, pop the top element each time before proceeding
+    // Why? Because we want to visualize the recursive function calls in the stack
+    if (!isHanoiProblemStackEmpty(hanoiProblemStack))
+        popHanoiProblemStack(hanoiProblemStack);
 
-        if (topFunctionCall.disk == 1) {
-            // If there is only one disk left, move it directly from the source to the destination!
-            moveHanoiDisk(hanoiProblemStack, topFunctionCall.disk, topFunctionCall.sourcePillar, topFunctionCall.targetPillar);
-        } else {
-            // Push the next recursive function calls to the stack
-            pushHanoiProblemStack(hanoiProblemStack, topFunctionCall.disk - 1, topFunctionCall.sourcePillar, topFunctionCall.targetPillar, topFunctionCall.auxiliaryPillar);
-            moveHanoiDisk(hanoiProblemStack, topFunctionCall.disk, topFunctionCall.sourcePillar, topFunctionCall.targetPillar);
-            pushHanoiProblemStack(hanoiProblemStack, topFunctionCall.disk - 1, topFunctionCall.auxiliaryPillar, topFunctionCall.sourcePillar, topFunctionCall.targetPillar);
-        }
+    // Base case: If there's no disk to move, return
+    if (disk == 0)
+        return;     
+
+    if (disk == 1) {
+        // If there's only one disk to move, move it directly from the source pillar to the target pillar
+        pushHanoiProblemStack(hanoiProblemStack, disk, sourcePillar, auxiliaryPillar, targetPillar);
+        moveHanoiDisk(hanoiProblemStack, disk, sourcePillar, targetPillar);
+    } else {
+        // Otherwise, solve the Hanoi tower problem recursively
+        solveHanoiTowerProblem(hanoiProblemStack, disk - 1, sourcePillar, targetPillar, auxiliaryPillar);
+        
+        // Push current function call to the stack to ensure the correct order of the recursive function calls
+        // Then, pop the element after moving the disk to the target pillar
+        pushHanoiProblemStack(hanoiProblemStack, disk, sourcePillar, auxiliaryPillar, targetPillar);      
+        moveHanoiDisk(hanoiProblemStack, disk, sourcePillar, targetPillar);
+        popHanoiProblemStack(hanoiProblemStack);
+
+        solveHanoiTowerProblem(hanoiProblemStack, disk - 1, auxiliaryPillar, sourcePillar, targetPillar);
     }
 
-    unsigned int totalMoves = (1 << disk) - 1;
-    printf("The Hanoi tower problem has been solved in %i moves!\n", totalMoves);
+    // We manually do push and pop the stack to visualize the recursive function calls in the stack
+    // (Not related to the actual Hanoi tower problem solving algorithm and its functionality)
 }
+
 
 // Solve the Hanoi tower problem
 int main(void) {
-    solveHanoiTowerProblem(4, 'A', 'B', 'C');
+    HanoiProblemStack* hanoiProblemStack = createHanoiProblemStack();
+    solveHanoiTowerProblem(hanoiProblemStack, 3, 'A', 'B', 'C');
+    
+    printf("The total number of disk movements: %u\n", diskMovementCounter);
     return 0;
 }
 
-// Move disk  4 from pillar A to pillar C
+// Move disk  1 from pillar A to pillar C
 // Current total call depth: 1
-//    |-[Call depth: 1] Disk: 3, Source: A, Auxiliary: C, Target: B
-// ========================================================================================================================================================================================
-// Move disk  3 from pillar B to pillar C
+//    |-[Call depth: 1] Disk: 1, Source: A, Auxiliary: B, Target: C
+// ==================================================================================================================================================================================================
+// Move disk  2 from pillar A to pillar B
 // Current total call depth: 2
-//    |-[Call depth: 1] Disk: 2, Source: B, Auxiliary: C, Target: A
-//    |   |-[Call depth: 2] Disk: 3, Source: A, Auxiliary: C, Target: B
-// ========================================================================================================================================================================================
-// Move disk  2 from pillar A to pillar C
-// Current total call depth: 3
-//    |-[Call depth: 1] Disk: 1, Source: A, Auxiliary: C, Target: B
-//    |   |-[Call depth: 2] Disk: 2, Source: B, Auxiliary: C, Target: A
-//    |   |   |-[Call depth: 3] Disk: 3, Source: A, Auxiliary: C, Target: B
-// ========================================================================================================================================================================================
-// Move disk  1 from pillar B to pillar C
-// Current total call depth: 3
-//    |-[Call depth: 1] Disk: 1, Source: A, Auxiliary: C, Target: B
-//    |   |-[Call depth: 2] Disk: 2, Source: B, Auxiliary: C, Target: A
-//    |   |   |-[Call depth: 3] Disk: 3, Source: A, Auxiliary: C, Target: B
-// ========================================================================================================================================================================================
-// Move disk  1 from pillar A to pillar B
-// Current total call depth: 2
-//    |-[Call depth: 1] Disk: 2, Source: B, Auxiliary: C, Target: A
-//    |   |-[Call depth: 2] Disk: 3, Source: A, Auxiliary: C, Target: B
-// ========================================================================================================================================================================================
-// Move disk  2 from pillar B to pillar A
-// Current total call depth: 2
-//    |-[Call depth: 1] Disk: 1, Source: B, Auxiliary: A, Target: C
-//    |   |-[Call depth: 2] Disk: 3, Source: A, Auxiliary: C, Target: B
-// ========================================================================================================================================================================================
-// Move disk  1 from pillar C to pillar A
-// Current total call depth: 2
-//    |-[Call depth: 1] Disk: 1, Source: B, Auxiliary: A, Target: C
-//    |   |-[Call depth: 2] Disk: 3, Source: A, Auxiliary: C, Target: B
-// ========================================================================================================================================================================================
-// Move disk  1 from pillar B to pillar C
+//    |-[Call depth: 1] Disk: 2, Source: A, Auxiliary: C, Target: B
+//    |   |-[Call depth: 2] Disk: 1, Source: A, Auxiliary: B, Target: C
+// ==================================================================================================================================================================================================
+// Move disk  1 from pillar C to pillar B
 // Current total call depth: 1
-//    |-[Call depth: 1] Disk: 3, Source: A, Auxiliary: C, Target: B
-// ========================================================================================================================================================================================
-// Move disk  3 from pillar A to pillar B
-// Current total call depth: 1
-//    |-[Call depth: 1] Disk: 2, Source: A, Auxiliary: B, Target: C
-// ========================================================================================================================================================================================
-// Move disk  2 from pillar C to pillar B
+//    |-[Call depth: 1] Disk: 1, Source: C, Auxiliary: A, Target: B
+// ==================================================================================================================================================================================================
+// Move disk  3 from pillar A to pillar C
 // Current total call depth: 2
-//    |-[Call depth: 1] Disk: 1, Source: C, Auxiliary: B, Target: A
-//    |   |-[Call depth: 2] Disk: 2, Source: A, Auxiliary: B, Target: C
-// ========================================================================================================================================================================================
-// Move disk  1 from pillar A to pillar B
+//    |-[Call depth: 1] Disk: 3, Source: A, Auxiliary: B, Target: C
+//    |   |-[Call depth: 2] Disk: 1, Source: C, Auxiliary: A, Target: B
+// ==================================================================================================================================================================================================
+// Move disk  1 from pillar B to pillar A
+// Current total call depth: 1
+//    |-[Call depth: 1] Disk: 1, Source: B, Auxiliary: C, Target: A
+// ==================================================================================================================================================================================================
+// Move disk  2 from pillar B to pillar C
 // Current total call depth: 2
-//    |-[Call depth: 1] Disk: 1, Source: C, Auxiliary: B, Target: A
-//    |   |-[Call depth: 2] Disk: 2, Source: A, Auxiliary: B, Target: C
-// ========================================================================================================================================================================================
-// Move disk  1 from pillar C to pillar A
+//    |-[Call depth: 1] Disk: 2, Source: B, Auxiliary: A, Target: C
+//    |   |-[Call depth: 2] Disk: 1, Source: B, Auxiliary: C, Target: A
+// ==================================================================================================================================================================================================
+// Move disk  1 from pillar A to pillar C
 // Current total call depth: 1
-//    |-[Call depth: 1] Disk: 2, Source: A, Auxiliary: B, Target: C
-// ========================================================================================================================================================================================
-// Move disk  2 from pillar A to pillar C
-// Current total call depth: 1
-//    |-[Call depth: 1] Disk: 1, Source: A, Auxiliary: C, Target: B
-// ========================================================================================================================================================================================
-// Move disk  1 from pillar B to pillar C
-// Current total call depth: 1
-//    |-[Call depth: 1] Disk: 1, Source: A, Auxiliary: C, Target: B
-// ========================================================================================================================================================================================
-// Move disk  1 from pillar A to pillar B
-// Current total call depth: 0
-// ========================================================================================================================================================================================
-// The Hanoi tower problem has been solved in 15 moves!
+//    |-[Call depth: 1] Disk: 1, Source: A, Auxiliary: B, Target: C
+// ==================================================================================================================================================================================================
+// The total number of disk movements: 7
