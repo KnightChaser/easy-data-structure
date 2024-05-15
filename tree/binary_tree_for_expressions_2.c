@@ -1,7 +1,8 @@
 /**
- * @file binary_tree_for_expressions.c
+ * @file binary_tree_for_expressions_2.c
  * @brief A basic binary tree implementation for expressions with using struct and pointers.
  *        By using the postorder traversal, we can get the result of the expression.
+ *        It parses the given expression and builds a binary tree from it.
  */
 
 #include <stdio.h>
