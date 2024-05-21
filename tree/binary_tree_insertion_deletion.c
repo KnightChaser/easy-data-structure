@@ -135,10 +135,13 @@ int main(void) {
     //                30
     //         ----------------
     //         |              |
-    //        20              50
+    //        20              40
     //      -----            -----
     //      |   |            |   |
-    //     10  NULL         40   60
+    //     10  NULL         NULL 50
+    //                          -----
+    //                          |   |
+    //                         NULL 60
 
     // Insert nodes
     root = insertBinaryTreeNode(root, 30);
