@@ -135,3 +135,13 @@ if __name__ == "__main__":
     print("Min value:", pq.get_min())
     print("Size:", pq.size())
     pq.level_order_traversal()
+
+# 100 95 80 85 90 55 70 45 75 35 5 15 50 25 60 10 40 30 65 20 
+# Max value: 100
+# Min value: 5
+# Size: 20
+# Removing max value: 100
+# Max value: 95
+# Min value: 5
+# Size: 19
+# 95 90 80 85 35 55 70 45 75 20 5 15 50 25 60 10 40 30 65
