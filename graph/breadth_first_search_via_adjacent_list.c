@@ -199,3 +199,11 @@ int main(void) {
 
     return 0;
 }
+
+// VERTEX 0 -> 2 1 
+// VERTEX 1 -> 2
+// VERTEX 2 -> 3 0
+// VERTEX 3 -> 4 3
+// VERTEX 4 ->
+// BFS from vertex 2: VERTEX 2 -> VERTEX 3 -> VERTEX 0 -> VERTEX 4 -> VERTEX 1 -> END
+// BFS from vertex 0: VERTEX 0 -> VERTEX 2 -> VERTEX 1 -> VERTEX 3 -> VERTEX 4 -> END
