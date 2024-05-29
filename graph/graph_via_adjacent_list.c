@@ -27,16 +27,16 @@ typedef struct graphNode {
 
 // Graph structure
 typedef struct graphViaAdjacentList {
-    unsigned int vertices;                      // The number of vertices in the graph
-    unsigned int edges;                         // The number of edges in the graph
+    unsigned int numberOfVertices;              // The number of vertices in the graph
+    unsigned int numberOfEdges;                 // The number of edges in the graph
     GraphNode *adjacentList[MAX_VERTICES];      // The adjacent list of the graph (Each vertex has a linked list of the connected vertices)
 } GraphViaAdjacentList;
 
 // Create a graph via adjacent list
 GraphViaAdjacentList* createGraphViaAdjacentList() {
     GraphViaAdjacentList* graph = (GraphViaAdjacentList*) malloc(sizeof(GraphViaAdjacentList));
-    graph->vertices = 0;
-    graph->edges = 0;
+    graph->numberOfVertices = 0;
+    graph->numberOfEdges = 0;
     memset(graph->adjacentList, 0, sizeof(graph->adjacentList));
     return graph;
 }
@@ -48,7 +48,7 @@ void addEdgeToGraphViaAdjacentList(GraphViaAdjacentList* graph, Edge* edge) {
         node->vertex = edge->destinationEdge;
         node->next = graph->adjacentList[edge->sourceEdge];
         graph->adjacentList[edge->sourceEdge] = node;
-        graph->edges++;
+        graph->numberOfEdges++;
 
         if (!edge->isDirected) {
             // If the edge is undirected, add the reverse edge
@@ -56,7 +56,7 @@ void addEdgeToGraphViaAdjacentList(GraphViaAdjacentList* graph, Edge* edge) {
             reverseNode->vertex = edge->sourceEdge;
             reverseNode->next = graph->adjacentList[edge->destinationEdge];
             graph->adjacentList[edge->destinationEdge] = reverseNode;
-            graph->edges++;                     // Consider the reverse edge as well
+            graph->numberOfEdges++;                     // Consider the reverse edge as well
         }
     } else {
         // Invalid edge source or destination
@@ -83,7 +83,7 @@ void removeEdgeFromGraphViaAdjacentList(GraphViaAdjacentList* graph, Edge* edge)
                     previousNode->next = node->next;
                 }
                 free(node);
-                graph->edges--;
+                graph->numberOfEdges--;
                 break;
             }
             // We didn't find the edge yet, continue to the next node
@@ -105,7 +105,7 @@ void removeEdgeFromGraphViaAdjacentList(GraphViaAdjacentList* graph, Edge* edge)
                         previousNode->next = node->next;
                     }
                     free(node);
-                    graph->edges--;
+                    graph->numberOfEdges--;
                     break;
                 }
                 previousNode = node;
