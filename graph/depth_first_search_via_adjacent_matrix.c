@@ -86,11 +86,45 @@ void depthFirstSearchViaAdjacentMatrixRecursive(GraphViaAdjacentMatrix* graph, u
     for (unsigned int vertex = 0; vertex < graph->vertices; vertex++) {
         // If the vertex is adjacent to the source vertex and not visited, recursively visit the vertex
         if (graph->adjacentMatrix[sourceVertex][vertex] && !visitedVertices[vertex]) {
+            // Recursively visit the vertex only if the vertex is adjacent to the source vertex and not visited
+            // Adjacency is checked via adjacent matrix. If 1, then the vertex is adjacent to the source vertex (connected by an edge)
             depthFirstSearchViaAdjacentMatrixRecursive(graph, vertex, visitedVertices);
         }
     }
 }
 
+// Depth First Search (DFS) algorithm (iterative approach)
+// 1. Prepare the stacks for the vertices visited and the vertices to visit
+// 2. Start from the source vertex
+// 3. Visit the source vertex
+// 4. Push the source vertex to the visited stack
+// 5. Push the adjacent vertices of the source vertex to the vertices to visit stack
+// 6. Pop the vertices to visit stack and visit the vertex
+// 7. Repeat the steps 5-6 until the vertices to visit stack is empty
+void depthFirstSearchViaAdjacentMatrixIterative(GraphViaAdjacentMatrix* graph, unsigned int sourceVertex) {
+    bool visitedVertices[MAX_VERTICES] = {false};               // Initialize all the vertices as not visited
+    unsigned int verticesStack[MAX_VERTICES];                   // Stack to store the vertices to visit
+    unsigned int verticesStackTop = 0;                          // Stack top index
+    verticesStack[verticesStackTop++] = sourceVertex;           // Push the source vertex to the stack
+
+    while (verticesStackTop > 0) {
+        // Pop the vertex from the stack and delete the vertex from the stack
+        unsigned int currentVertex = verticesStack[--verticesStackTop];         
+        if (!visitedVertices[currentVertex]) {
+            visitedVertices[currentVertex] = true;                         // Mark the vertex as visited
+            printf("VERTEX %u -> ", currentVertex);
+        
+        // Push the adjacent vertices of the current vertex to the stack (but only if the vertex is not visited yet)
+        for (unsigned int vertex = 0; vertex < graph->vertices; vertex++) {
+                if (graph->adjacentMatrix[currentVertex][vertex] && !visitedVertices[vertex]) {
+                    verticesStack[verticesStackTop++] = vertex;
+                }
+            }
+        }
+    }
+}
+
+// Main function
 int main(void) {
     GraphViaAdjacentMatrix* graph = createGraphViaAdjacentMatrix(5);
     Edge edge1 = {0, 1, false};
@@ -107,11 +141,17 @@ int main(void) {
     printGraphViaAdjacentMatrix(graph);
     bool visitedVertices[5] = {false};      // Initialize all the vertices as not visited
 
-    printf("Depth First Search (DFS) via adjacent matrix(recursive): ");
 
     // Start from the vertex 0, and recursively visit all the vertices via DFS(recursive approach)
+    printf("Depth First Search (DFS) via adjacent matrix(recursive): ");
     depthFirstSearchViaAdjacentMatrixRecursive(graph, 0, visitedVertices);
     printf("END\n");
+
+    // Start from the vertex 0, and iteratively visit all the vertices via DFS(iterative approach)
+    printf("Depth First Search (DFS) via adjacent matrix(iterative): ");
+    depthFirstSearchViaAdjacentMatrixIterative(graph, 0);
+    printf("END\n");
+
     return 0;
 }
 
