@@ -11,8 +11,8 @@
 #define MAX_VERTICES 100
 
 typedef struct graphViaAdjacentMatrix {
-    unsigned int vertices;
-    unsigned int edges;
+    unsigned int numberOfVertices;      // The number of vertices in the graph
+    unsigned int numberOfEdges;         // The number of edges in the graph
     bool adjacentMatrix[MAX_VERTICES][MAX_VERTICES];
 } GraphViaAdjacentMatrix;
 
@@ -26,8 +26,8 @@ typedef struct edge {
 // Create a graph via adjacent matrix
 GraphViaAdjacentMatrix* createGraphViaAdjacentMatrix(unsigned int vertices) {
     GraphViaAdjacentMatrix* graph = (GraphViaAdjacentMatrix*) malloc(sizeof(GraphViaAdjacentMatrix));
-    graph->vertices = vertices;
-    graph->edges = 0;
+    graph->numberOfVertices = vertices;
+    graph->numberOfEdges = 0;
     for (unsigned int row = 0; row < vertices; row++) {
         for (unsigned int column = 0; column < vertices; column++) {
             graph->adjacentMatrix[row][column] = false;
@@ -38,13 +38,13 @@ GraphViaAdjacentMatrix* createGraphViaAdjacentMatrix(unsigned int vertices) {
 
 // Add an edge to the graph
 void addEdgeToGraphViaAdjacentMatrix(GraphViaAdjacentMatrix* graph, Edge* edge) {
-    if (edge->sourceEdge < graph->vertices && edge->destinationEdge < graph->vertices) {
+    if (edge->sourceEdge < graph->numberOfVertices && edge->destinationEdge < graph->numberOfVertices) {
         graph->adjacentMatrix[edge->sourceEdge][edge->destinationEdge] = true;
         if (!edge->isDirected) {
             // If the edge is undirected, add the reverse edge
             graph->adjacentMatrix[edge->destinationEdge][edge->sourceEdge] = true;
         }
-        graph->edges++;
+        graph->numberOfEdges++;
     } else {
         fprintf(stderr, "Invalid edge source or destination\n");
     }
@@ -52,13 +52,13 @@ void addEdgeToGraphViaAdjacentMatrix(GraphViaAdjacentMatrix* graph, Edge* edge) 
 
 // Remove an edge from the graph
 void removeEdgeFromGraphViaAdjacentMatrix(GraphViaAdjacentMatrix* graph, Edge* edge) {
-    if (edge->sourceEdge < graph->vertices && edge->destinationEdge < graph->vertices) {
+    if (edge->sourceEdge < graph->numberOfVertices && edge->destinationEdge < graph->numberOfVertices) {
         graph->adjacentMatrix[edge->sourceEdge][edge->destinationEdge] = false;
         if (!edge->isDirected) {
             // If the edge is undirected, remove the reverse edge
             graph->adjacentMatrix[edge->destinationEdge][edge->sourceEdge] = false;
         }
-        graph->edges--;
+        graph->numberOfEdges--;
     } else {
         fprintf(stderr, "Invalid edge source or destination\n");
     }
@@ -74,13 +74,13 @@ void removeEdgeFromGraphViaAdjacentMatrix(GraphViaAdjacentMatrix* graph, Edge* e
 // 04  F   F   F   T   T
 void printGraphViaAdjacentMatrix(GraphViaAdjacentMatrix* graph) {
     printf("    ");
-    for (unsigned int column = 0; column < graph->vertices; column++) {
+    for (unsigned int column = 0; column < graph->numberOfVertices; column++) {
         printf("%02d  ", column);
     }
     printf("\n");
-    for (unsigned int row = 0; row < graph->vertices; row++) {
+    for (unsigned int row = 0; row < graph->numberOfVertices; row++) {
         printf("%02d  ", row);
-        for (unsigned int column = 0; column < graph->vertices; column++) {
+        for (unsigned int column = 0; column < graph->numberOfVertices; column++) {
             printf("%c   ", graph->adjacentMatrix[row][column] ? 'T' : 'F');
         }
         printf("\n");
