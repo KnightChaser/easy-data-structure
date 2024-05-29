@@ -162,3 +162,4 @@ int main(void) {
 // 03  F   F   T   F   T
 // 04  F   F   F   T   F
 // Depth First Search (DFS) via adjacent matrix(recursive): VERTEX 0 -> VERTEX 1 -> VERTEX 2 -> VERTEX 3 -> VERTEX 4 -> END
+// Depth First Search (DFS) via adjacent matrix(iterative): VERTEX 0 -> VERTEX 2 -> VERTEX 3 -> VERTEX 4 -> VERTEX 1 -> END
