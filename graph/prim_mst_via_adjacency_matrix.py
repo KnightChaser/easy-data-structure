@@ -39,9 +39,14 @@ def prim_mst_via_adjacency_list(graph_adjacency_list) -> tuple:
                 minimum_edge_weights[vertex] = graph_adjacency_list[minimum_weight_vertex][vertex]
                 parents_of_vertices[vertex]  = minimum_weight_vertex
 
-    return parents_of_vertices, minimum_edge_weights
+    # Collect the minimum edge weights and the parents of the vertices in the MST
+    mst_edges = [(parents_of_vertices[vertex], vertex) for vertex in range(1, number_of_vertices)]
+    minimum_edge_weights = [minimum_edge_weights[vertex] for vertex in range(1, number_of_vertices)]
+    return mst_edges, minimum_edge_weights
 
 if __name__ == "__main__":
+    # Row is the source vertex and column is the destination vertex
+    # The value of the cell is the weight of the edge between the source and destination vertices
     graph_adjacency_matrix = np.array([
         [0, 2, 0, 6, 0],
         [2, 0, 3, 8, 5],
@@ -50,17 +55,11 @@ if __name__ == "__main__":
         [0, 5, 7, 9, 0]
     ])
 
-    parents_of_vertices, minimum_edge_weights = prim_mst_via_adjacency_list(graph_adjacency_matrix)
+    mst_edges, minimum_edge_weights = prim_mst_via_adjacency_list(graph_adjacency_matrix)
+    print(f"Minimum Spanning Tree Edges: {mst_edges}")
+    print(f"Minimum Edge Weights: {minimum_edge_weights}")
+    print(f"Sparse Representation of the MST: {sum(minimum_edge_weights)}")
 
-    print(f"Edge \t\t Weight")
-    for vertex in range(1, len(parents_of_vertices)):
-        print(f"{parents_of_vertices[vertex]} - {vertex} \t\t {minimum_edge_weights[vertex]}")
-
-    print(f"The minimum spanning tree has a total weight of {sum(minimum_edge_weights)}")
-
-# Edge             Weight
-# 0 - 1            2
-# 1 - 2            3
-# 0 - 3            6
-# 1 - 4            5
-# The minimum spanning tree has a total weight of 16
+# Spanning Tree Edges: [(0, 1), (1, 2), (0, 3), (1, 4)]
+# Minimum Edge Weights: [2, 3, 6, 5]
+# Sparse Representation of the MST: 16
