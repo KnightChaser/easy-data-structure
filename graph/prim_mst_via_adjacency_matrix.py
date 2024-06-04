@@ -9,7 +9,7 @@ def prim_mst_via_adjacency_list(graph_adjacency_list) -> tuple:
     number_of_vertices      = len(graph_adjacency_list)         # Number of vertices in the graph
     selected_vertices       = [False] * number_of_vertices      # Keep track of whether a vertex is selected or not in the MST
     minimum_edge_weights    = [np.inf] * number_of_vertices     # Keep track of the minimum edge weight of each vertex (initialize with infinity)
-    parents_of_vertices     = [None] * number_of_vertices       # Stores the MST by recording the parent of each vertex in the MST
+    parents_of_vertices     = [None] * number_of_vertices       # Stores the parent of each vertex in the MST (connected to the vertex with the minimum edge weight)
 
     # Start with the vertex 0
     minimum_edge_weights[0] = 0
@@ -19,6 +19,8 @@ def prim_mst_via_adjacency_list(graph_adjacency_list) -> tuple:
         minimum_weight          = np.inf
         minimum_weight_vertex   = None
 
+        # Iterate over all the vertices to find the vertex with the minimum edge weight
+        # If there was a priority queue, we could have used that to find the minimum edge weight vertex
         for vertex in range(number_of_vertices):
             if not selected_vertices[vertex] and minimum_edge_weights[vertex] < minimum_weight:
                 minimum_weight          = minimum_edge_weights[vertex]
