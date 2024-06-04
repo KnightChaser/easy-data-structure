@@ -7,12 +7,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// Comparing function to use in sorting
-int comparator(const void * vertex1, const void* vertex2) {
-    const int(*x)[3] = vertex1;
-    const int(*y)[3] = vertex2;
+// Define the structure for edges
+typedef struct Edge {
+    int source;
+    int destination;
+    int weight;
+}Edge;
 
-    return (*x)[2] - (*y)[2];
+// Comparing function to use in sorting
+int comparator(const void* edge1, const void* edge2) {
+    struct Edge* e1 = (struct Edge*)edge1;
+    struct Edge* e2 = (struct Edge*)edge2;
+    return e1->weight - e2->weight;
 }
 
 // Initializing of parent[] and rank[] arrays
@@ -27,13 +33,11 @@ void makeSet(int* parent, int* rank, int numberOfVertices) {
 int findParentVertex(int* parent, int targetVertex) {
     if (parent[targetVertex] == targetVertex)
         return targetVertex;
-
     return parent[targetVertex] = findParentVertex(parent, parent[targetVertex]);
 }
 
-// Function to unite(unioning) two sets
+// Function to unite (union) two sets
 void unionSet(int vertex1, int vertex2, int* parent, int* rank) {
-    // Find the parents of the given vertices
     int parentOfVertex1 = findParentVertex(parent, vertex1);
     int parentOfVertex2 = findParentVertex(parent, vertex2);
 
@@ -42,38 +46,35 @@ void unionSet(int vertex1, int vertex2, int* parent, int* rank) {
     } else if (rank[parentOfVertex1] > rank[parentOfVertex2]) {
         parent[parentOfVertex2] = parentOfVertex1;
     } else {
-        // If the ranks are equal, then make one as parent and increment its rank
         parent[parentOfVertex2] = parentOfVertex1;
-        rank[parentOfVertex2]++;
+        rank[parentOfVertex1]++;
     }
 }
 
 // Function to find the Minimum Spanning Tree using Kruskal's Algorithm
-void kruskalAlgorithm(int numberOfEdges, int edges[numberOfEdges][3]) {
+void kruskalAlgorithm(int numberOfEdges, struct Edge edges[]) {
     // Sort the edges based on their weights
-    qsort(edges, numberOfEdges, sizeof(edges[0]), comparator);
+    qsort(edges, numberOfEdges, sizeof(struct Edge), comparator);
 
-    int parentOfVertices[numberOfEdges];
-    int rankOfVertices[numberOfEdges];
+    int parentOfVertices[numberOfEdges];        // Array to store the parent of vertices
+    int rankOfVertices[numberOfEdges];          // Array to store the rank of vertices (height of the tree)
 
     // Initialize the parent[] and rank[] arrays
     makeSet(parentOfVertices, rankOfVertices, numberOfEdges);
 
-    // Initialize the minimum spanning tree weight
     int minimumSpanningTreeWeight = 0;
 
     printf("Following are the edges in the constructed MST\n");
     for (int index = 0; index < numberOfEdges; index++) {
-        int parentOfVertex1 = findParentVertex(parentOfVertices, edges[index][0]);
-        int parentOfVertex2 = findParentVertex(parentOfVertices, edges[index][1]);
-        int weight = edges[index][2]; // We consider undirected graph
+        int parentOfVertex1 = findParentVertex(parentOfVertices, edges[index].source);          // Find the parent of source vertex
+        int parentOfVertex2 = findParentVertex(parentOfVertices, edges[index].destination);     // Find the parent of destination vertex
 
-        // If the parents are different then the edge is not forming a cycle
-        // Because the edge is connecting two different sets
         if (parentOfVertex1 != parentOfVertex2) {
+            // If the parent of source vertex is not equal to the parent of destination vertex,
+            // then unite (union) the two sets and add the edge to the minimum spanning tree
             unionSet(parentOfVertex1, parentOfVertex2, parentOfVertices, rankOfVertices);
-            minimumSpanningTreeWeight += weight;
-            printf("(%d, %d) => Cost: %d\n", edges[index][0], edges[index][1], weight);
+            minimumSpanningTreeWeight += edges[index].weight;
+            printf("(%d, %d) => Cost: %d\n", edges[index].source, edges[index].destination, edges[index].weight);
         }
     }
 
@@ -81,7 +82,8 @@ void kruskalAlgorithm(int numberOfEdges, int edges[numberOfEdges][3]) {
 }
 
 int main(void) {
-    int edges[5][3] = {
+    // A graph with 4 vertices and 5 edges
+    Edge edges[] = {
         {1, 2, 2},
         {1, 3, 4},
         {2, 3, 5},
@@ -94,6 +96,7 @@ int main(void) {
 
     return 0;
 }
+
 
 // Following are the edges in the constructed MST
 // (1, 2) => Cost: 2
