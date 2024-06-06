@@ -20,9 +20,9 @@ public:
     BinaryTreeNode* root;
 
     // Constructor, create a root node
-    BinaryTree() {
+    BinaryTree(BinaryTreeElementType data) {
         this->root = new BinaryTreeNode();
-        this->root->data = 'A';
+        this->root->data = data;
         this->root->left = nullptr;
         this->root->right = nullptr;
         std::cout << "Root node is created." << std::endl;
@@ -90,6 +90,7 @@ void BinaryTree<BinaryTreeElementType>::printAllNodes() {
 }
 
 // Print a node
+// Actually, this is an in-order traversal
 template <typename BinaryTreeElementType>
 void BinaryTree<BinaryTreeElementType>::printNode(BinaryTreeNode* node) {
     if (node == nullptr) {
@@ -131,7 +132,7 @@ int main(void) {
     //     B   C
 
     // Create a binary tree
-    BinaryTree<char> binaryTree;
+    BinaryTree<char> binaryTree('A');
 
     // Create left and right child nodes
     binaryTree.createLeftChild(binaryTree.root, 'B');
