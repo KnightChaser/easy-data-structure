@@ -2,7 +2,7 @@
  * @file binary_tree_traversal_iterative.c
  * @brief A basic binary tree traversal implementation with using struct and pointers.
  *        By using iterative approach, it will traverse the tree in three ways (a little bit complex way).
- *        (Preorder, Inorder, Postorder)
+ *        (Preorder, Inorder, Postorder, Level order(BFS))
  */
 //
 
@@ -178,6 +178,44 @@ void postorder(struct BinaryTreeNode* root) {
     free(stack2);
 }
 
+// Level order traversal (BFS; Breadth First Search)
+void levelOrder(struct BinaryTreeNode* root) {
+    if (root == NULL) {
+        return;
+    }
+
+    // Level order(BFS) requires a queue structure
+    // For now, we will use just an array to simulate a queue
+    struct BinaryTreeNode* queue[100];
+    unsigned int front = 0;
+    unsigned int rear = 0;
+
+    // Enqueue the root node
+    queue[rear] = root;
+    rear++;
+
+    // Traverse the tree iteratively
+    while (front < rear) {
+        // Dequeue the front node
+        struct BinaryTreeNode* node = queue[front];
+        front++;
+
+        printf("%c ", node->data);
+
+        // Enqueue the left child
+        if (node->left != NULL) {
+            queue[rear] = node->left;
+            rear++;
+        }
+
+        // Enqueue the right child
+        if (node->right != NULL) {
+            queue[rear] = node->right;
+            rear++;
+        }
+    }
+}
+
 // Create a node with the given value
 struct BinaryTreeNode* createNode(BinaryTreeElementType data) {
     struct BinaryTreeNode* newNode = (struct BinaryTreeNode*)malloc(sizeof(struct BinaryTreeNode));
@@ -229,16 +267,20 @@ int main(void) {
     root->right->right = createNode('G');
 
     // Preorder traversal
-    printf("Preorder traversal  : ");
+    printf("Preorder traversal        : ");
     preorder(root);
 
     // Inorder traversal
-    printf("\nInorder traversal   : ");
+    printf("\nInorder traversal         : ");
     inorder(root);
 
     // Postorder traversal
-    printf("\nPostorder traversal : ");
+    printf("\nPostorder traversal       : ");
     postorder(root);
+
+    // Level order traversal(BFS)
+    printf("\nLevel order traversal(BFS): ");
+    levelOrder(root);
 
     // Free
     freeTree(root);
@@ -246,6 +288,7 @@ int main(void) {
     return 0;
 }
 
-// Preorder traversal  : A B D E C F G 
-// Inorder traversal   : D B E A F C G
-// Postorder traversal : D E B F G C A
+// Preorder traversal        : A B D E C F G 
+// Inorder traversal         : D B E A F C G
+// Postorder traversal       : D E B F G C A
+// Level order traversal(BFS): A B C D E F G
