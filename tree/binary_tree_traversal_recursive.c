@@ -52,6 +52,41 @@ void postorder(struct BinaryTreeNode* node) {
     printf("%c ", node->data);
 }
 
+// A plus note: Well, it's not a recursive method, but you can 
+// also try the level order traversal (BFS) with using a queue.
+// The previous recursive snippets(variations of DFS) also have iterative versions as well.
+void levelOrder(struct BinaryTreeNode* node) {
+    // Queue as an array
+    struct BinaryTreeNode* queue[256];
+    unsigned int front = 0;
+    unsigned int rear = 0;
+
+    // Enqueue the root node
+    queue[rear] = node;
+    rear++;
+
+    // Traverse the tree iteratively
+    while (front < rear) {
+        // Dequeue the front node
+        struct BinaryTreeNode* currentNode = queue[front];
+        front++;
+
+        printf("%c ", currentNode->data);
+
+        // Enqueue the left child
+        if (currentNode->left != NULL) {
+            queue[rear] = currentNode->left;
+            rear++;
+        }
+
+        // Enqueue the right child
+        if (currentNode->right != NULL) {
+            queue[rear] = currentNode->right;
+            rear++;
+        }
+    }
+}
+
 // Create a node with the given value
 struct BinaryTreeNode* createNode(BinaryTreeElementType data) {
     struct BinaryTreeNode* newNode = (struct BinaryTreeNode*)malloc(sizeof(struct BinaryTreeNode));
@@ -101,16 +136,20 @@ int main(void) {
     root->right->right = createNode('G');
 
     // Preorder traversal
-    printf("Preorder traversal : ");
+    printf("Preorder traversal    : ");
     preorder(root);
 
     // Inorder traversal
-    printf("\nInorder traversal  : ");
+    printf("\nInorder traversal     : ");
     inorder(root);
 
     // Postorder traversal
-    printf("\nPostorder traversal: ");
+    printf("\nPostorder traversal   : ");
     postorder(root);
+
+    // (Extra) Level order traversal (also known as BFS)
+    printf("\nLevel order traversal : ");
+    levelOrder(root);
 
     // Free
     freeTree(root);
@@ -119,6 +158,7 @@ int main(void) {
 
 }
 
-// Preorder traversal : A B D E C F G 
-// Inorder traversal  : D B E A F C G
-// Postorder traversal: D E B F G C A
+// Preorder traversal    : A B D E C F G 
+// Inorder traversal     : D B E A F C G
+// Postorder traversal   : D E B F G C A
+// Level order traversal : A B C D E F G
