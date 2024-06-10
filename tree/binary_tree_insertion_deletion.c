@@ -87,6 +87,8 @@ BinaryTreeNode* insertBinaryTreeNodeRecursive(BinaryTreeNode *root, binaryTreeEl
         root->left = insertBinaryTreeNodeRecursive(root->left, data);
     else if (data > root->data)
         root->right = insertBinaryTreeNodeRecursive(root->right, data);
+    else
+        return NULL;
 
     return root;
 }
