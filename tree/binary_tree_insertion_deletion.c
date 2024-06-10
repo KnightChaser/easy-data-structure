@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <time.h>
 
 // Binary tree node structure
 typedef int binaryTreeElement;
@@ -73,8 +74,8 @@ BinaryTreeNode* findMinimumValueNode(BinaryTreeNode *root) {
     return current;
 }
 
-// Insert a new node
-BinaryTreeNode* insertBinaryTreeNode(BinaryTreeNode *root, binaryTreeElement data) {
+// Insert a new node to the given binary search tree recursively
+BinaryTreeNode* insertBinaryTreeNodeRecursive(BinaryTreeNode *root, binaryTreeElement data) {
 
     // If the tree is empty, return a new node
     if (root == NULL)
@@ -83,9 +84,41 @@ BinaryTreeNode* insertBinaryTreeNode(BinaryTreeNode *root, binaryTreeElement dat
     // Insert the new node to the left if the given data is less than the root's data
     // Insert the new node to the right if the given data is greater than the root's data
     if (data < root->data)
-        root->left = insertBinaryTreeNode(root->left, data);
+        root->left = insertBinaryTreeNodeRecursive(root->left, data);
     else if (data > root->data)
-        root->right = insertBinaryTreeNode(root->right, data);
+        root->right = insertBinaryTreeNodeRecursive(root->right, data);
+
+    return root;
+}
+
+// Insert a new node to the given binary search tree iteratively
+BinaryTreeNode* insertBinaryTreeNodeIterative(BinaryTreeNode *root, binaryTreeElement data) {
+    // Create nodes to traverse the tree
+    BinaryTreeNode *newNode     = createNewBinaryTreeNode(data);
+    BinaryTreeNode *currentNode = root;
+    BinaryTreeNode *parentNode  = NULL;
+
+    // Traverse the tree to
+    while (currentNode != NULL) {
+        parentNode = currentNode;
+        if (data < currentNode->data)
+            // If the data want to insert is less than the current node's data, move to the left subtree
+            currentNode = currentNode->left;
+        else if (data > currentNode->data)
+            // If the data want to insert is greater than the current node's data, move to the right subtree
+            currentNode = currentNode->right;
+        else
+            // If the given data is already in the tree, return the root (we can't insert duplicates)
+            return NULL;
+    }
+
+    // If there is no node with the desired data, insert the new node
+    if (parentNode == NULL)
+        return newNode;
+    else if (data < parentNode->data)
+        parentNode->left = newNode;
+    else
+        parentNode->right = newNode;
 
     return root;
 }
@@ -163,12 +196,12 @@ int main(void) {
     //                         NULL 60
 
     // Insert nodes
-    root = insertBinaryTreeNode(root, 30);
-    root = insertBinaryTreeNode(root, 20);
-    root = insertBinaryTreeNode(root, 10);
-    root = insertBinaryTreeNode(root, 40);
-    root = insertBinaryTreeNode(root, 50);
-    root = insertBinaryTreeNode(root, 60);
+    root = insertBinaryTreeNodeRecursive(root, 30);
+    root = insertBinaryTreeNodeRecursive(root, 20);
+    root = insertBinaryTreeNodeRecursive(root, 10);
+    root = insertBinaryTreeNodeIterative(root, 40);
+    root = insertBinaryTreeNodeIterative(root, 50);
+    root = insertBinaryTreeNodeIterative(root, 60);
     printf("Original binary tree          : ");
     inorderTraversalBinaryTree(root); // Output: 10 20 30 40 50 60
     printf("\n");
