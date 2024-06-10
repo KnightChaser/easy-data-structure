@@ -1,6 +1,6 @@
 /**
- * @file binary_tree_insertion_deletion.c
- * @brief A binary tree implementation with insertion and deletion operations.
+ * @file binary_search_tree_insertion_deletion.c
+ * @brief A binary search tree implementation with insertion and deletion operations.
  *        Suppose all values in the given binary tree are unique and aligned from left to right.
  */
 //
@@ -11,16 +11,16 @@
 #include <time.h>
 
 // Binary tree node structure
-typedef int binaryTreeElement;
-typedef struct BinaryTreeNode {
-    binaryTreeElement data;
-    struct BinaryTreeNode *left;
-    struct BinaryTreeNode *right;
-} BinaryTreeNode;
+typedef int binarySearchTreeElement;
+typedef struct BinarySearchTreeNode {
+    binarySearchTreeElement data;
+    struct BinarySearchTreeNode *left;
+    struct BinarySearchTreeNode *right;
+} BinarySearchTreeNode;
 
 // Create a new node
-BinaryTreeNode* createNewBinaryTreeNode(binaryTreeElement data) {
-    BinaryTreeNode *newNode = (BinaryTreeNode*)malloc(sizeof(BinaryTreeNode));
+BinarySearchTreeNode* createNewBinarySearchTreeNode(binarySearchTreeElement data) {
+    BinarySearchTreeNode *newNode = (BinarySearchTreeNode*)malloc(sizeof(BinarySearchTreeNode));
     newNode->data = data;
     newNode->left = NULL;
     newNode->right = NULL;
@@ -28,7 +28,7 @@ BinaryTreeNode* createNewBinaryTreeNode(binaryTreeElement data) {
 }
 
 // Search the given data in the given binary search tree recursively
-bool searchBinaryTreeNodeRecursive(BinaryTreeNode *root, binaryTreeElement data) {
+bool searchBinarySearchTreeNodeRecursive(BinarySearchTreeNode *root, binarySearchTreeElement data) {
     // If the tree is empty, return false
     if (root == NULL)
         return false;
@@ -40,13 +40,13 @@ bool searchBinaryTreeNodeRecursive(BinaryTreeNode *root, binaryTreeElement data)
     // Search the left subtree if the given data is less than the root's data
     // Search the right subtree if the given data is greater than the root's data
     if (data < root->data)
-        return searchBinaryTreeNodeRecursive(root->left, data);
+        return searchBinarySearchTreeNodeRecursive(root->left, data);
     else
-        return searchBinaryTreeNodeRecursive(root->right, data);
+        return searchBinarySearchTreeNodeRecursive(root->right, data);
 }
 
 // Search the given data in the given binary search tree iteratively
-bool searchBinaryTreeNodeIterative(BinaryTreeNode* root, binaryTreeElement data) {
+bool searchBinarySearchTreeNodeIterative(BinarySearchTreeNode* root, binarySearchTreeElement data) {
     while(root != NULL) {
         // If the given data is found, return true
         if (root->data == data)
@@ -65,8 +65,8 @@ bool searchBinaryTreeNodeIterative(BinaryTreeNode* root, binaryTreeElement data)
 }
 
 // Find the minimum value node in the given binary search tree
-BinaryTreeNode* findMinimumValueNode(BinaryTreeNode *root) {
-    BinaryTreeNode *current = root;
+BinarySearchTreeNode* findMinimumValueNode(BinarySearchTreeNode *root) {
+    BinarySearchTreeNode *current = root;
 
     // The minimum value node is the leftmost node
     while (current->left != NULL)
@@ -75,18 +75,18 @@ BinaryTreeNode* findMinimumValueNode(BinaryTreeNode *root) {
 }
 
 // Insert a new node to the given binary search tree recursively
-BinaryTreeNode* insertBinaryTreeNodeRecursive(BinaryTreeNode *root, binaryTreeElement data) {
+BinarySearchTreeNode* insertBinarySearchTreeNodeRecursive(BinarySearchTreeNode *root, binarySearchTreeElement data) {
 
     // If the tree is empty, return a new node
     if (root == NULL)
-        return createNewBinaryTreeNode(data);
+        return createNewBinarySearchTreeNode(data);
 
     // Insert the new node to the left if the given data is less than the root's data
     // Insert the new node to the right if the given data is greater than the root's data
     if (data < root->data)
-        root->left = insertBinaryTreeNodeRecursive(root->left, data);
+        root->left = insertBinarySearchTreeNodeRecursive(root->left, data);
     else if (data > root->data)
-        root->right = insertBinaryTreeNodeRecursive(root->right, data);
+        root->right = insertBinarySearchTreeNodeRecursive(root->right, data);
     else
         return NULL;
 
@@ -94,11 +94,11 @@ BinaryTreeNode* insertBinaryTreeNodeRecursive(BinaryTreeNode *root, binaryTreeEl
 }
 
 // Insert a new node to the given binary search tree iteratively
-BinaryTreeNode* insertBinaryTreeNodeIterative(BinaryTreeNode *root, binaryTreeElement data) {
+BinarySearchTreeNode* insertBinarySearchTreeNodeIterative(BinarySearchTreeNode *root, binarySearchTreeElement data) {
     // Create nodes to traverse the tree
-    BinaryTreeNode *newNode     = createNewBinaryTreeNode(data);
-    BinaryTreeNode *currentNode = root;
-    BinaryTreeNode *parentNode  = NULL;
+    BinarySearchTreeNode *newNode     = createNewBinarySearchTreeNode(data);
+    BinarySearchTreeNode *currentNode = root;
+    BinarySearchTreeNode *parentNode  = NULL;
 
     // Traverse the tree to
     while (currentNode != NULL) {
@@ -126,7 +126,7 @@ BinaryTreeNode* insertBinaryTreeNodeIterative(BinaryTreeNode *root, binaryTreeEl
 }
 
 // Delete the node with the given data from the given binary search tree recursively
-BinaryTreeNode* deleteBinaryTreeNodeRecursive(BinaryTreeNode *root, binaryTreeElement data) {
+BinarySearchTreeNode* deleteBinarySearchTreeNodeRecursive(BinarySearchTreeNode *root, binarySearchTreeElement data) {
     // If the tree is empty, return NULL
     if (root == NULL)
         return root;
@@ -134,10 +134,10 @@ BinaryTreeNode* deleteBinaryTreeNodeRecursive(BinaryTreeNode *root, binaryTreeEl
     // Search for the node to be deleted
     if (data < root->data) {
         // Move to the left subtree
-        root->left = deleteBinaryTreeNodeRecursive(root->left, data);
+        root->left = deleteBinarySearchTreeNodeRecursive(root->left, data);
     } else if (data > root->data) {
         // Move to the right subtree
-        root->right = deleteBinaryTreeNodeRecursive(root->right, data);
+        root->right = deleteBinarySearchTreeNodeRecursive(root->right, data);
     } else {
         // Node with the matching data is found
 
@@ -149,11 +149,11 @@ BinaryTreeNode* deleteBinaryTreeNodeRecursive(BinaryTreeNode *root, binaryTreeEl
 
         // Case 2: Node with one child => Copy the child to the node and free the child (thus, the node is deleted)
         else if (root->left == NULL) {
-            BinaryTreeNode *temp = root->right;
+            BinarySearchTreeNode *temp = root->right;
             free(root);
             return temp;
         } else if (root->right == NULL) {
-            BinaryTreeNode *temp = root->left;
+            BinarySearchTreeNode *temp = root->left;
             free(root);
             return temp;
         }
@@ -162,20 +162,20 @@ BinaryTreeNode* deleteBinaryTreeNodeRecursive(BinaryTreeNode *root, binaryTreeEl
         // Then, delete the in-order successor node
         else {
             // Find the minimum value node in the right subtree(nearest successor)
-            BinaryTreeNode *temp = findMinimumValueNode(root->right);
+            BinarySearchTreeNode *temp = findMinimumValueNode(root->right);
             // Replace the data of the node to be deleted with the in-order successor's data
             root->data = temp->data;
             // Recursively delete the in-order successor
-            root->right = deleteBinaryTreeNodeRecursive(root->right, temp->data);
+            root->right = deleteBinarySearchTreeNodeRecursive(root->right, temp->data);
         }
     }
     return root;
 }
 
 // Delete the node with the given data from the given binary search tree iteratively
-BinaryTreeNode* deleteBinaryTreeNodeIterative(BinaryTreeNode* root, binaryTreeElement data) {
-    BinaryTreeNode* parentNode = NULL;      // Parent node of the node to be deleted
-    BinaryTreeNode* currentNode = root;     // Node to be deleted
+BinarySearchTreeNode* deleteBinarySearchTreeNodeIterative(BinarySearchTreeNode* root, binarySearchTreeElement data) {
+    BinarySearchTreeNode* parentNode = NULL;      // Parent node of the node to be deleted
+    BinarySearchTreeNode* currentNode = root;     // Node to be deleted
     
     // Find the node to be deleted
     while (currentNode != NULL && currentNode->data != data) {
@@ -235,7 +235,7 @@ BinaryTreeNode* deleteBinaryTreeNodeIterative(BinaryTreeNode* root, binaryTreeEl
     // Then, delete the in-order successor node
     else {
         // Find the minimum value node in the right subtree(nearest successor)
-        BinaryTreeNode* temp = findMinimumValueNode(currentNode->right);
+        BinarySearchTreeNode* temp = findMinimumValueNode(currentNode->right);
 
         // Replace the data of the node to be deleted with the in-order successor's data
         currentNode->data = temp->data;
@@ -258,17 +258,17 @@ BinaryTreeNode* deleteBinaryTreeNodeIterative(BinaryTreeNode* root, binaryTreeEl
 }
 
 // Inorder traversal of the given binary search tree
-void inorderTraversalBinaryTree(BinaryTreeNode *root) {
+void inorderTraversalBinarySearchTree(BinarySearchTreeNode *root) {
     if (root != NULL) {
-        inorderTraversalBinaryTree(root->left);
+        inorderTraversalBinarySearchTree(root->left);
         printf("%d ", root->data);
-        inorderTraversalBinaryTree(root->right);
+        inorderTraversalBinarySearchTree(root->right);
     }
 }
 
 // Main function to test the binary search tree operations
 int main(void) {
-    BinaryTreeNode* root = NULL;
+    BinarySearchTreeNode* root = NULL;
 
     // Tree diagram
     //                30
@@ -283,38 +283,38 @@ int main(void) {
     //                         NULL 60
 
     // Insert nodes
-    root = insertBinaryTreeNodeRecursive(root, 30);
-    root = insertBinaryTreeNodeRecursive(root, 20);
-    root = insertBinaryTreeNodeRecursive(root, 10);
-    root = insertBinaryTreeNodeIterative(root, 40);
-    root = insertBinaryTreeNodeIterative(root, 50);
-    root = insertBinaryTreeNodeIterative(root, 60);
+    root = insertBinarySearchTreeNodeRecursive(root, 30);
+    root = insertBinarySearchTreeNodeRecursive(root, 20);
+    root = insertBinarySearchTreeNodeRecursive(root, 10);
+    root = insertBinarySearchTreeNodeIterative(root, 40);
+    root = insertBinarySearchTreeNodeIterative(root, 50);
+    root = insertBinarySearchTreeNodeIterative(root, 60);
     printf("Original binary tree          : ");
-    inorderTraversalBinaryTree(root); // Output: 10 20 30 40 50 60
+    inorderTraversalBinarySearchTree(root); // Output: 10 20 30 40 50 60
     printf("\n");
 
     // Search for 20 in the binary tree (recursively)
-    printf("Search for 20 in the binary tree (recursively): %s\n", searchBinaryTreeNodeRecursive(root, 20) ? "Found" : "Not found");
+    printf("Search for 20 in the binary tree (recursively): %s\n", searchBinarySearchTreeNodeRecursive(root, 20) ? "Found" : "Not found");
 
     // Search for 41 in the binary tree (iteratively)
-    printf("Search for 41 in the binary tree (iteratively): %s\n", searchBinaryTreeNodeIterative(root, 41) ? "Found" : "Not found");
+    printf("Search for 41 in the binary tree (iteratively): %s\n", searchBinarySearchTreeNodeIterative(root, 41) ? "Found" : "Not found");
 
     // Remove 10 from the binary tree
-    root = deleteBinaryTreeNodeRecursive(root, 10);
+    root = deleteBinarySearchTreeNodeRecursive(root, 10);
     printf("Remove 10 from the binary tree: ");
-    inorderTraversalBinaryTree(root); // Output: 20 30 40 50 60
+    inorderTraversalBinarySearchTree(root); // Output: 20 30 40 50 60
     printf("\n");
 
     // Remove 20 from the binary tree
-    root = deleteBinaryTreeNodeRecursive(root, 20);
+    root = deleteBinarySearchTreeNodeRecursive(root, 20);
     printf("Remove 20 from the binary tree: ");
-    inorderTraversalBinaryTree(root); // Output: 30 40 50 60
+    inorderTraversalBinarySearchTree(root); // Output: 30 40 50 60
     printf("\n");
 
     // Remove 30 from the binary tree
-    root = deleteBinaryTreeNodeIterative(root, 30);
+    root = deleteBinarySearchTreeNodeIterative(root, 30);
     printf("Remove 30 from the binary tree: ");
-    inorderTraversalBinaryTree(root); // Output: 40 50 60
+    inorderTraversalBinarySearchTree(root); // Output: 40 50 60
     printf("\n");
 
     return 0;
