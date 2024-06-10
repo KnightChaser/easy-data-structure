@@ -125,7 +125,8 @@ BinaryTreeNode* insertBinaryTreeNodeIterative(BinaryTreeNode *root, binaryTreeEl
     return root;
 }
 
-BinaryTreeNode* deleteBinaryTreeNode(BinaryTreeNode *root, binaryTreeElement data) {
+// Delete the node with the given data from the given binary search tree recursively
+BinaryTreeNode* deleteBinaryTreeNodeRecursive(BinaryTreeNode *root, binaryTreeElement data) {
     // If the tree is empty, return NULL
     if (root == NULL)
         return root;
@@ -133,10 +134,10 @@ BinaryTreeNode* deleteBinaryTreeNode(BinaryTreeNode *root, binaryTreeElement dat
     // Search for the node to be deleted
     if (data < root->data) {
         // Move to the left subtree
-        root->left = deleteBinaryTreeNode(root->left, data);
+        root->left = deleteBinaryTreeNodeRecursive(root->left, data);
     } else if (data > root->data) {
         // Move to the right subtree
-        root->right = deleteBinaryTreeNode(root->right, data);
+        root->right = deleteBinaryTreeNodeRecursive(root->right, data);
     } else {
         // Node with the matching data is found
 
@@ -165,12 +166,96 @@ BinaryTreeNode* deleteBinaryTreeNode(BinaryTreeNode *root, binaryTreeElement dat
             // Replace the data of the node to be deleted with the in-order successor's data
             root->data = temp->data;
             // Recursively delete the in-order successor
-            root->right = deleteBinaryTreeNode(root->right, temp->data);
+            root->right = deleteBinaryTreeNodeRecursive(root->right, temp->data);
         }
     }
     return root;
 }
 
+// Delete the node with the given data from the given binary search tree iteratively
+BinaryTreeNode* deleteBinaryTreeNodeIterative(BinaryTreeNode* root, binaryTreeElement data) {
+    BinaryTreeNode* parentNode = NULL;      // Parent node of the node to be deleted
+    BinaryTreeNode* currentNode = root;     // Node to be deleted
+    
+    // Find the node to be deleted
+    while (currentNode != NULL && currentNode->data != data) {
+        parentNode = currentNode;
+        if (data < currentNode->data)
+            currentNode = currentNode->left;
+        else
+            currentNode = currentNode->right;
+    }
+
+    // If the node to be deleted is not found, return the root
+    if (currentNode == NULL)
+        return root;
+
+    // Case 1: Node with no children (leaf node)
+    // Then, free the node itself immediately
+    if (currentNode->left == NULL && currentNode->right == NULL) {
+        if (currentNode != root) {
+            // If the node to be deleted is not the root, set the parent's child to NULL
+            if (parentNode->left == currentNode)
+                parentNode->left = NULL;
+            else
+                parentNode->right = NULL;
+        } else
+            root = NULL;
+        free(currentNode);
+    }
+
+    // Case 2: Node with one child
+    // Copy the child to the node and free the child (thus, the node is deleted)
+    else if (currentNode->left == NULL && currentNode->right != NULL) {
+        // There is only a right child
+        if (currentNode != root) {
+            // If the node to be deleted is not the root, set the parent's child(current node) to the current node's right child
+            if (parentNode->left == currentNode)
+                parentNode->left = currentNode->right;
+            else
+                parentNode->right = currentNode->right;
+        } else
+            root = currentNode->right;
+        free(currentNode);
+    } else if (currentNode->left != NULL && currentNode->right == NULL) {
+        // There is only a left child
+        if (currentNode != root) {
+            // If the node to be deleted is not the root, set the parent's child(current node) to the current node's left child
+            if (parentNode->left == currentNode)
+                parentNode->left = currentNode->left;
+            else
+                parentNode->right = currentNode->left;
+        } else
+            root = currentNode->left;
+        free(currentNode);
+    }
+
+    // Case 3: Node with two children
+    // Replace the data of the node with the in-order successor's data
+    // Then, delete the in-order successor node
+    else {
+        // Find the minimum value node in the right subtree(nearest successor)
+        BinaryTreeNode* temp = findMinimumValueNode(currentNode->right);
+
+        // Replace the data of the node to be deleted with the in-order successor's data
+        currentNode->data = temp->data;
+
+        // Iteratively delete the in-order successor
+        while (currentNode->right != temp)
+            currentNode = currentNode->right;
+
+        // If the in-order successor has a right child, set the parent's right child to the in-order successor's right child
+        // By doing this, the between the in-order successor and its right child is removed
+        if (temp->right != NULL)
+            currentNode->right = temp->right;
+        else
+            currentNode->right = NULL;
+
+        free(temp);
+    }
+
+    return root;
+}
 
 // Inorder traversal of the given binary search tree
 void inorderTraversalBinaryTree(BinaryTreeNode *root) {
@@ -215,19 +300,19 @@ int main(void) {
     printf("Search for 41 in the binary tree (iteratively): %s\n", searchBinaryTreeNodeIterative(root, 41) ? "Found" : "Not found");
 
     // Remove 10 from the binary tree
-    root = deleteBinaryTreeNode(root, 10);
+    root = deleteBinaryTreeNodeRecursive(root, 10);
     printf("Remove 10 from the binary tree: ");
     inorderTraversalBinaryTree(root); // Output: 20 30 40 50 60
     printf("\n");
 
     // Remove 20 from the binary tree
-    root = deleteBinaryTreeNode(root, 20);
+    root = deleteBinaryTreeNodeRecursive(root, 20);
     printf("Remove 20 from the binary tree: ");
     inorderTraversalBinaryTree(root); // Output: 30 40 50 60
     printf("\n");
 
     // Remove 30 from the binary tree
-    root = deleteBinaryTreeNode(root, 30);
+    root = deleteBinaryTreeNodeIterative(root, 30);
     printf("Remove 30 from the binary tree: ");
     inorderTraversalBinaryTree(root); // Output: 40 50 60
     printf("\n");
