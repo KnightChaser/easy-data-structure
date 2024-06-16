@@ -257,3 +257,5 @@ int main(void) {
 
     return 0;
 }
+
+// In-order traversal of the red-black tree: 10 20 25 30 40 50
